@@ -20,6 +20,7 @@ import { UserService } from './user/user.service';
 import { UserController } from './user/user.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
     ProductModule,
     ChattingModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

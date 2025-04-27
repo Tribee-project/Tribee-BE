@@ -38,6 +38,7 @@ export class AuthService {
 
         if(user && (password === user.password)) {
             const payload = {id: user.id, email: email, nickname: user.nickname};
+
             const accessToken = await this.jwtService.sign(payload);
             return {accessToken};
         } else {
