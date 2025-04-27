@@ -7,11 +7,15 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
-  const allowedOrigins = configService.get<string>('ALLOWED_ORIGINS').split(',');
+  // const allowedOrigins = configService.get<string>('ALLOWED_ORIGINS').split(',');
 
   app.enableCors({
-    origin: allowedOrigins
+    origin: true,
+    credentials: true,
+    exposedHeaders:['Authorization']
   });
+
+  app.enableCors();
 
 
   await app.listen(process.env.PORT ?? 3000);
