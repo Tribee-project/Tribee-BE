@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { UserInfoDto } from './dto/user-info';
 import { UserUpdateDto } from './dto/user-update';
+import { UserPasswordDto } from './dto/user-password';
 
 @Injectable()
 export class UserService {
@@ -25,5 +26,15 @@ export class UserService {
         Object.assign(user, dto);
 
        await this.userRepository.save(user);
+    }
+
+    async updatePassword(user: any, dto: UserPasswordDto) {
+        if (user.password === dto.password) {
+            throw new BadRequestException('Do Not Update Same Password');
+        }
+
+        Object.assign(user, dto);
+
+        await this.userRepository.save(user);
     }
 }
