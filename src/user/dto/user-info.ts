@@ -7,6 +7,6 @@ export class UserInfoDto {
 
     constructor(user: User) {
         this.email = user.email;
-        this.nickname = user.email;
+        this.nickname = user.nickname;
     }
 }

@@ -1,8 +1,9 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, Req, UseGuards, ValidationPipe } from '@nestjs/common';
 
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { UserUpdateDto } from './dto/user-update';
 
 @Controller('/api/v1/user')
 export class UserController {
@@ -12,6 +13,12 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   getUserInfo(@Req() req: any) {
     return this.userService.getUserInfo(req.user);
+  }
+
+  @Put('/info')
+  @UseGuards(JwtAuthGuard)
+  updateUserInfo(@Req() req: any, @Body(ValidationPipe) userUpdateDto: UserUpdateDto) {
+    return this.userService.updateUserInfo(req.user, userUpdateDto);
   }
 
 }
