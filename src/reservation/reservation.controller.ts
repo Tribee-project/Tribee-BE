@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/reservation-create';
@@ -12,5 +12,11 @@ export class ReservationController {
   @UseGuards(JwtAuthGuard)
   createReservation(@Req()req: any, @Body()dto: CreateReservationDto ) {
     return this.reservationService.createReservation(req.user, dto);
+  }
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  getReservation(@Req()req: any) {
+    return this.reservationService.getReservation(req.user);
   }
 }

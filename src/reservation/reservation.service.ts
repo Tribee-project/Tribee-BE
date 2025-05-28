@@ -29,4 +29,13 @@ export class ReservationService {
 
         await this.reservationRepository.save(reservation);
     }
+
+    async getReservation(user:any) {
+        const userId = user.id;
+
+        return await this.reservationRepository.find({
+            where : {userId: userId},
+            order: {reservationDate: 'DESC'}
+        })
+    }
 }
