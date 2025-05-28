@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { InternationalProduct } from './product.document';
 import { Model } from 'mongoose';
 import { AREA } from './enum/product.area.enum';
+import { STATUS } from 'src/common/enum/data.stauts.enum';
 
 @Injectable()
 export class ProductService {
@@ -11,7 +12,7 @@ export class ProductService {
         private productModel: Model<InternationalProduct>
     ) {}
 
-    async getInternationalProducts(startDate: string, endDate: string, area1: AREA, area2: string, status: string) {
+    async getInternationalProducts(startDate: string, endDate: string, area1: AREA, area2: string, status: STATUS) {
         const conditions: any = {};
 
         if (startDate) {

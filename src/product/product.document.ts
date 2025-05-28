@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
+import { STATUS } from "src/common/enum/data.stauts.enum";
 
 export type InternationalProductDocument = InternationalProduct & Document;
 
@@ -77,7 +78,7 @@ export class InternationalProduct extends Document {
     airline: string
 
     @Prop()
-    status: string
+    status: STATUS
 }
 
 export const InternationalProductSchema = SchemaFactory.createForClass(InternationalProduct);

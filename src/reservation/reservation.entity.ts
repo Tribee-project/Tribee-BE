@@ -1,3 +1,4 @@
+import { STATUS } from "src/common/enum/data.stauts.enum";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -25,5 +26,5 @@ export class Reservation {
     personnel: number;
 
     @Column()
-    status: string;
+    status: STATUS;
 }

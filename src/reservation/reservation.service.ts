@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reservation } from './reservation.entity';
 import { Repository } from 'typeorm';
 import { CreateReservationDto } from './dto/reservation-create';
 import { UserInfoDto } from 'src/user/dto/user-info';
+import { STATUS } from 'src/common/enum/data.stauts.enum';
 
 @Injectable()
 export class ReservationService {
@@ -24,7 +25,7 @@ export class ReservationService {
             departureDate,
             cost,
             personnel,
-            status: "ACTIVE"
+            status: 0
         })
 
         await this.reservationRepository.save(reservation);
@@ -37,5 +38,19 @@ export class ReservationService {
             where : {userId: userId},
             order: {reservationDate: 'DESC'}
         })
+    }
+
+    async cancledReservation(user: any, id: string) {
+        const reservation = await this.reservationRepository.findOne({
+            where : {id: id}
+        })
+
+        if (!reservation) {
+            throw new NotFoundException('Reservation not found');
+          }
+
+        reservation.status = STATUS.CANCLED;
+
+        await this.reservationRepository.save(reservation);
     }
 }

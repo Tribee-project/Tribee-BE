@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/reservation-create';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
 
 @Controller('/api/v1/reservation')
 export class ReservationController {
@@ -18,5 +19,11 @@ export class ReservationController {
   @UseGuards(JwtAuthGuard)
   getReservation(@Req()req: any) {
     return this.reservationService.getReservation(req.user);
+  }
+
+  @Put('/cancled')
+  @UseGuards(JwtAuthGuard)
+  cancledReservation(@Req()req: any, @Query('id') id: string) {
+    return this.reservationService.cancledReservation(req.user, id);
   }
 }
