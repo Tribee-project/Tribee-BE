@@ -34,6 +34,10 @@ export class ProductService {
             conditions.status = status;
         }
         
-        return this.productModel.find(conditions).exec();
+        return await this.productModel.find(conditions).exec();
+    }
+
+    async getInternationalProductById(id: string[]) {
+        return await this.productModel.find({_id: {$in: id}}).exec();
     }
 }

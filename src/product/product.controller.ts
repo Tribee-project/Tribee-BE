@@ -2,6 +2,7 @@ import { Controller, Get, Query, Req } from '@nestjs/common';
 
 import { ProductService } from './product.service';
 import { AREA } from './enum/product.area.enum';
+import { StringToArrayPipe } from 'src/pipe/string-to-array.pipe';
 
 @Controller('/api/v1/product')
 export class ProductController {
@@ -16,5 +17,10 @@ export class ProductController {
     @Query('status') status?: string
   ){
     return this.productService.getInternationalProducts(startDate, endDate, area1, area2, status);
+  }
+
+  @Get('/list')
+  getInternationalProductById(@Query('id', StringToArrayPipe) id: string[]) {
+    return this.productService.getInternationalProductById(id);
   }
 }
