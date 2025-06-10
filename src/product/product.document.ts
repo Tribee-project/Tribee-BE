@@ -29,7 +29,10 @@ export class TravelProduct extends Document {
   image: string[];
 
   @Prop()
-  detail: string;
+  detailImage: string;
+
+  @Prop()
+  detailContent: string;
 
   @Prop()
   travelPoints: string;
