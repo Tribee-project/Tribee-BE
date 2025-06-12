@@ -38,15 +38,14 @@ export class TravelProduct extends Document {
   travelPoints: string;
 
   @Prop({
-    type: [
+    type:
       {
         departureTime: { type: String, required: true },
         arrivalTime: { type: String, required: true },
         timeTaken: { type: String, required: true },
         _id: false,
       },
-    ],
-    default: [],
+    default: {},
   })
   departureData: {
     departureTime: string;
@@ -55,15 +54,14 @@ export class TravelProduct extends Document {
   };
 
   @Prop({
-    type: [
+    type:
       {
         departureTime: { type: String, required: true },
         arrivalTime: { type: String, required: true },
         timeTaken: { type: String, required: true },
         _id: false,
       },
-    ],
-    default: [],
+    default: {},
   })
   arrivalData: {
     departureTime: string;
