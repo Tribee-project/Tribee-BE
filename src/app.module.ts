@@ -21,6 +21,7 @@ import { UserController } from './user/user.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { UserModule } from './user/user.module';
+import { DynamicPriceModule } from './dynamic-price/dynamic-price.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UserModule } from './user/user.module';
     ChattingModule,
     AuthModule,
     UserModule,
+    DynamicPriceModule,
   ],
   controllers: [],
   providers: [],
