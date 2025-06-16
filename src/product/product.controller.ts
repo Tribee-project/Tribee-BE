@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Req } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query, Req } from '@nestjs/common';
 
 import { ProductService } from './product.service';
 import { AREA } from './enum/product-area.enum';
@@ -15,6 +15,7 @@ export class ProductController {
     @Query('category') category?: CATEGORY,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
+    @Query('travelDays',new ParseIntPipe({optional: true})) travelDays?: number, // query는 기본적으로 string
     @Query('area1') area1?: AREA,
     @Query('area2') area2?: string,
     @Query('status') status?: STATUS,
@@ -23,6 +24,7 @@ export class ProductController {
       category,
       startDate,
       endDate,
+      travelDays,
       area1,
       area2,
       status,

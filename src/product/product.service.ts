@@ -17,6 +17,7 @@ export class ProductService {
     category: CATEGORY,
     startDate: string,
     endDate: string,
+    travelDays: number,
     area1: AREA,
     area2: string,
     status: STATUS,
@@ -33,6 +34,10 @@ export class ProductService {
 
     if (endDate) {
       conditions.startDate = { $lte: endDate };
+    }
+
+    if (travelDays) {
+      conditions.travelDays = travelDays;
     }
 
     if (area1) {
