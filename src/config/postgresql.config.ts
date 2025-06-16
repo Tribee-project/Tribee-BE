@@ -15,7 +15,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       password: this.configService.get<string>('SUPABASE_PASSWORD'),
       database: this.configService.get<string>('SUPABASE_DATABASE'),
       entities: ['dist/**/*.entity.{ts,js}'],
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
 
       // ✅ Supabase는 SSL 사용 필수
