@@ -50,7 +50,7 @@ export class ProductService {
     return await this.productModel.find(conditions).exec();
   }
 
-  async getTravelProductById(id: string[]) {
-    return await this.productModel.find({ _id: { $in: id } }).exec();
+  async getTravelProductById(id: string) {
+    return await this.productModel.findOne({ _id: id }).exec();
   }
 }

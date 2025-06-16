@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req } from '@nestjs/common';
 
 import { ProductService } from './product.service';
 import { AREA } from './enum/product-area.enum';
@@ -29,8 +29,8 @@ export class ProductController {
     );
   }
 
-  @Get('/list')
-  getTravelProductById(@Query('id', StringToArrayPipe) id: string[]) {
+  @Get('/single/:id')
+  getTravelProductById(@Param('id') id: string) {
     return this.productService.getTravelProductById(id);
   }
 }
