@@ -6,7 +6,7 @@ import { DataSource } from 'typeorm';
 
 import { ChattingModule } from './chatting/chatting.module';
 import { MongoConfigService } from './config/mongo.config';
-import { TypeOrmConfigService } from './config/mysql.config';
+import { TypeOrmConfigService } from './config/postgresql.config';
 import { EventModule } from './event/event.module';
 import { ProductModule } from './product/product.module';
 import { QuestionModule } from './question/question.module';

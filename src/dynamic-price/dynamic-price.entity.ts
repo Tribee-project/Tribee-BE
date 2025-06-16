@@ -8,6 +8,6 @@ export class DynamicPrice {
     @Column()
     selectDate: string;
 
-    @Column({type: 'double'})
+    @Column({type: 'double precision'})
     extraRatio: number;
 }
