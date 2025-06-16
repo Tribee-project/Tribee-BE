@@ -46,4 +46,11 @@ export class ReviewService {
             order: {createdAt: 'desc'}
         })
     }
+
+    async getProdReview(prodId: string) {
+        return await this.reviewRepository.find({
+            where: {prodId: prodId},
+            order: {createdAt: 'desc'}
+        })
+    }
 }

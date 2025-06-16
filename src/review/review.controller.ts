@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 
 import { ReviewService } from './review.service';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
@@ -19,4 +19,10 @@ export class ReviewController {
   getReview(@Req()req: any) {
     return this.reviewService.getReview(req.user);
   }
+
+  @Get('/:prodId')
+  getProdReview(@Param('prodId') prodId: string) {
+    return this.reviewService.getProdReview(prodId);
+  }
+
 }
