@@ -9,7 +9,6 @@ import { MongoConfigService } from './config/mongo.config';
 import { TypeOrmConfigService } from './config/postgresql.config';
 import { EventModule } from './event/event.module';
 import { ProductModule } from './product/product.module';
-import { QuestionModule } from './question/question.module';
 import { ReservationModule } from './reservation/reservation.module';
 import { ReviewModule } from './review/review.module';
 import { AuthModule } from './auth/auth.module';
@@ -22,6 +21,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { UserModule } from './user/user.module';
 import { DynamicPriceModule } from './dynamic-price/dynamic-price.module';
+import { TourTicketModule } from './tour-ticket/tour-ticket.module';
 
 @Module({
   imports: [
@@ -35,7 +35,6 @@ import { DynamicPriceModule } from './dynamic-price/dynamic-price.module';
       useClass: MongoConfigService,
     }),
     ReviewModule,
-    QuestionModule,
     ReservationModule,
     EventModule,
     ProductModule,
@@ -43,6 +42,7 @@ import { DynamicPriceModule } from './dynamic-price/dynamic-price.module';
     AuthModule,
     UserModule,
     DynamicPriceModule,
+    TourTicketModule,
   ],
   controllers: [],
   providers: [],
