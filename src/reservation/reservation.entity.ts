@@ -1,5 +1,6 @@
 import { STATUS } from 'src/common/enum/data-stauts.enum';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { CATEGORY } from './enum/reservation-category.enum';
 
 @Entity()
 export class Reservation {
@@ -26,6 +27,9 @@ export class Reservation {
 
   @Column()
   isReviewed: boolean;
+
+  @Column()
+  category: CATEGORY;
 
   @Column()
   status: STATUS;

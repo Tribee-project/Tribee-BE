@@ -1,0 +1,4 @@
+export enum CATEGORY {
+    PACKAGE = "PACKAGE",
+    TOUR_TICKET = "TOUR_TICKET"
+}
