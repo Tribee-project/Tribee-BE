@@ -57,12 +57,14 @@ export class ProductService {
   }
 
   async getTravelProductById(id: string) {
-    const product =  await this.productModel.findOne({ _id: id }).exec();
-    if (product.detailImage) {
-      const base64 = await this.fetchImageAsBase64(product.detailImage);
-      product.detailImage = base64;
-    }
-    return product;
+    // const product =  await this.productModel.findOne({ _id: id }).exec();
+    // if (product.detailImage) {
+    //   const base64 = await this.fetchImageAsBase64(product.detailImage);
+    //   product.detailImage = base64;
+    // }
+    // return product;
+
+    return await this.productModel.findOne({_id: id}).exec();
   }
 
   async fetchImageAsBase64(url: string): Promise<string> {
