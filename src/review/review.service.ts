@@ -1,9 +1,15 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './review.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/review-create';
 import { Reservation } from 'src/reservation/reservation.entity';
+import { User } from 'src/user/user.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { TravelProduct } from 'src/product/product.document';
+import { Model } from 'mongoose';
+import { TourTicketProduct } from 'src/tour-ticket/tour-ticket.document';
+import { CATEGORY } from 'src/reservation/enum/reservation-category.enum';
 
 @Injectable()
 export class ReviewService {
@@ -11,7 +17,13 @@ export class ReviewService {
         @InjectRepository(Review)
         private reviewRepository:Repository<Review>,
         @InjectRepository(Reservation)
-        private reservationRepository: Repository<Reservation>
+        private reservationRepository: Repository<Reservation>,
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
+        @InjectModel(TravelProduct.name)
+        private travelProductModel: Model<TravelProduct>,
+        @InjectModel(TourTicketProduct.name)
+        private tourTicketModel: Model<TourTicketProduct>
     ) {}
 
     async createReview(user:any, dto: CreateReviewDto) {
@@ -41,16 +53,118 @@ export class ReviewService {
     async getReview(user: any) {
         const userId = user.id;
 
-        return await this.reviewRepository.find({
+        const reviewList =  await this.reviewRepository.find({
             where: {userId : userId},
             order: {createdAt: 'desc'}
+        });
+
+        const reserveId = reviewList.map(review => review.reserveId);    
+        const reservations = await this.reservationRepository.find({where: {id :In(reserveId)}})
+        const reserveMap = new Map(reservations.map(reservation => [reservation.id, reservation]));
+
+        const tourTicketProdIds: string[] = [];
+        const travelProdIds: string[] = [];
+
+        reservations.forEach(reservation => {
+            if (reservation.category === CATEGORY.TOUR_TICKET) {
+                tourTicketProdIds.push(reservation.prodId);
+            } else if (reservation.category === CATEGORY.PACKAGE) {
+                travelProdIds.push(reservation.prodId);
+            }
+        });
+
+        const [tourTicketProduct, travelProduct] = await Promise.all([
+            this.tourTicketModel.find({_id: {$in: tourTicketProdIds}}).exec(),
+            this.travelProductModel.find({ _id: {$in: travelProdIds}}),
+        ]);
+    
+        const tourTicketMap = new Map(tourTicketProduct.map(t => [t.id, t.title]));
+        const travelMap = new Map(travelProduct.map(p => [p.id, p.title]));
+
+        const result = reviewList.map(review => {
+            const {reserveId, ...reviewWithout} = review;
+            const reservation = reserveMap.get(reserveId) || null;
+
+            let product = null;
+            if (reservation) {
+                if (reservation.category === CATEGORY.PACKAGE) {
+                    product = travelMap.get(reservation.prodId) || null
+                }
+                if (reservation.category === CATEGORY.TOUR_TICKET) {
+                    product = tourTicketMap.get(reservation.prodId) || null
+                }
+            }
+
+            return {
+                ...reviewWithout,
+                reservation: reservation || null,
+                productTitle: product || null
+            }
         })
+
+        return result;
+
     }
 
     async getProdReview(prodId: string) {
-        return await this.reviewRepository.find({
+        const reviewList =  await this.reviewRepository.find({
             where: {prodId: prodId},
             order: {createdAt: 'desc'}
+        });
+
+        const userId = reviewList.map(review => review.userId);
+        const reserveId = reviewList.map(review => review.reserveId);
+        
+        const [users, reservations] = await Promise.all([
+            this.userRepository.find({where: {id: In(userId)}}),
+            this.reservationRepository.find({where: {id :In(reserveId)}})
+        ])
+
+        const userMap = new Map(users.map(user => [user.id, user.nickname]));
+        const reserveMap = new Map(reservations.map(reservation => [reservation.id, reservation]));
+
+        const tourTicketProdIds: string[] = [];
+        const travelProdIds: string[] = [];
+
+        reservations.forEach(reservation => {
+            if (reservation.category === CATEGORY.TOUR_TICKET) {
+                tourTicketProdIds.push(reservation.prodId);
+            } else if (reservation.category === CATEGORY.PACKAGE) {
+                travelProdIds.push(reservation.prodId);
+            }
+        });
+
+        const [tourTicketProduct, travelProduct] = await Promise.all([
+            this.tourTicketModel.find({_id: {$in: tourTicketProdIds}}).exec(),
+            this.travelProductModel.find({ _id: {$in: travelProdIds}}),
+        ]);
+    
+        const tourTicketMap = new Map(tourTicketProduct.map(t => [t.id, t.title]));
+        const travelMap = new Map(travelProduct.map(p => [p.id, p.title]));
+
+        const result = reviewList.map(review => {
+            const {userId, reserveId, ...reviewWithout} = review;
+            const nickName = userMap.get(userId) || null;
+            const reservation = reserveMap.get(reserveId) || null;
+
+            let product = null;
+            if (reservation) {
+                if (reservation.category === CATEGORY.PACKAGE) {
+                    product = travelMap.get(reservation.prodId) || null
+                }
+                if (reservation.category === CATEGORY.TOUR_TICKET) {
+                    product = tourTicketMap.get(reservation.prodId) || null
+                }
+            }
+
+            return {
+                ...reviewWithout,
+                nickName: nickName ||null,
+                reservation: reservation || null,
+                productTitle: product || null
+            }
         })
+
+        return result;
     }
 }
