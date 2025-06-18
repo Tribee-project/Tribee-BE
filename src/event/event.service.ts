@@ -17,4 +17,8 @@ export class EventService {
 
         return await this.eventModel.find().exec();
     }
+
+    async getEvent (id: String) {
+        return await this.eventModel.find({_id: id}).exec();
+    }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 
 import { EventService } from './event.service';
 import { STATUS } from './event-status.enum';
@@ -10,5 +10,10 @@ export class EventController {
   @Get("")
   getEvents(@Query('status') status: STATUS) {
     return this.eventService.getEvents(status);
+  }
+
+  @Get("/:id")
+  getEvent(@Param('id') id: string) {
+    return this.eventService.getEvent(id);
   }
 }
