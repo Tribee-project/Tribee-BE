@@ -159,7 +159,7 @@ export class ReviewService {
 
             return {
                 ...reviewWithout,
-                nickName: nickname ||null,
+                nickname: nickname ||null,
                 reservation: reservation || null,
                 productTitle: product || null
             }
