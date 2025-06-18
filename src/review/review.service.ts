@@ -144,7 +144,7 @@ export class ReviewService {
 
         const result = reviewList.map(review => {
             const {userId, reserveId, ...reviewWithout} = review;
-            const nickName = userMap.get(userId) || null;
+            const nickname = userMap.get(userId) || null;
             const reservation = reserveMap.get(reserveId) || null;
 
             let product = null;
@@ -159,7 +159,7 @@ export class ReviewService {
 
             return {
                 ...reviewWithout,
-                nickName: nickName ||null,
+                nickName: nickname ||null,
                 reservation: reservation || null,
                 productTitle: product || null
             }
