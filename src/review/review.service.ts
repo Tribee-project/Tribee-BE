@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './review.entity';
 import { In, Repository } from 'typeorm';
@@ -176,8 +176,10 @@ export class ReviewService {
             where: {id: reviewId}
         });
 
+        if (!review) throw new NotFoundException('Not Valid ReviewId');
+
         if (review.userId !== user.id) {
-            throw Error('No permission');
+            throw new ForbiddenException('No permission');
         }
 
         review.content = content;
