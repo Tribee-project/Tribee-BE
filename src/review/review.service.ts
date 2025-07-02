@@ -10,6 +10,7 @@ import { TravelProduct } from 'src/product/product.document';
 import { Model } from 'mongoose';
 import { TourTicketProduct } from 'src/tour-ticket/tour-ticket.document';
 import { CATEGORY } from 'src/reservation/enum/reservation-category.enum';
+import { UpdateReviewDto } from './dto/review-update';
 
 @Injectable()
 export class ReviewService {
@@ -166,5 +167,21 @@ export class ReviewService {
         })
 
         return result;
+    }
+
+    async updateReview(user: any, dto: UpdateReviewDto) {
+        const {reviewId, content} = dto;
+        
+        const review = await this.reviewRepository.findOne({
+            where: {id: reviewId}
+        });
+
+        if (review.userId !== user.id) {
+            throw Error('No permission');
+        }
+
+        review.content = content;
+
+        await this.reviewRepository.save(review);
     }
 }
