@@ -35,4 +35,9 @@ export class ProductController {
   getTravelProductById(@Param('id') id: string) {
     return this.productService.getTravelProductById(id);
   }
+
+  @Get('/search/:keyword')
+  searchTravelProduct(@Param('keyword') keyword: string) {
+    return this.productService.searchProduct(keyword);
+  }
 }

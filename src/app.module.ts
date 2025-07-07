@@ -22,6 +22,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { UserModule } from './user/user.module';
 import { DynamicPriceModule } from './dynamic-price/dynamic-price.module';
 import { TourTicketModule } from './tour-ticket/tour-ticket.module';
+import { MongoClientProvider } from './config/mongo.client.provider';
 
 @Module({
   imports: [
@@ -45,7 +46,7 @@ import { TourTicketModule } from './tour-ticket/tour-ticket.module';
     TourTicketModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [MongoClientProvider],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}
