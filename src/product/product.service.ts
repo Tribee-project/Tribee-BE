@@ -106,7 +106,21 @@ export class ProductService {
               path: 'travelPoint',
               score: {constant: {value: 3}}
             }
-          }
+          },
+          {
+            text :{
+              query: search,
+              path: 'travelDays',
+              score: {constant: {value: 3}}
+            }
+          },
+          {
+            text :{
+              query: search,
+              path: 'airline',
+              score: {constant: {value: 1}}
+            }
+          },
         ],
         minimumShouldMatch: 1,
         }
