@@ -81,7 +81,7 @@ export class ProductService {
   async searchProduct(search: string) {
     const productCollection = this.mongoClient.db('tribee').collection('travel_product');
 
-    return productCollection.aggregate([
+    return await productCollection.aggregate([
       {$search: {
         index: 'travel_search_index',
         compound: {
