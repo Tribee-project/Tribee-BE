@@ -37,7 +37,7 @@ export class ProductController {
   }
 
   @Get('/search')
-  searchTravelProduct(@Query('q') keyword: string) {
-    return this.productService.searchProduct(keyword);
+  async searchTravelProduct(@Query('q') keyword: string) {
+    return await this.productService.searchProduct(keyword);
   }
 }

@@ -81,6 +81,14 @@ export class ProductService {
   async searchProduct(search: string) {
     const productCollection = this.mongoClient.db('tribee').collection('travel_product');
 
+    const allowedSingleChars = new Set([
+      '괌'
+    ]);
+
+    if (search.length === 1 && !allowedSingleChars.has(search)) {
+      throw new Error('Search Keyword Too Short');
+    }
+
     return await productCollection.aggregate([
       {$search: {
         index: 'travel_search_index',
@@ -97,34 +105,53 @@ export class ProductService {
             text :{
               query: search,
               path: 'area',
-              score: {constant: {value: 5}}
+              synonyms : "synonyms_mapping",
+              score: { boost: { value: 20 } }
             }
           },
           {
             text :{
               query: search,
               path: 'travelPoint',
-              score: {constant: {value: 3}}
+              score: {boost: {value: 2}}
             }
           },
           {
             text :{
               query: search,
               path: 'travelDays',
-              score: {constant: {value: 3}}
+              score: {boost: {value: 1}}
             }
           },
           {
             text :{
               query: search,
               path: 'airline',
-              score: {constant: {value: 1}}
+              score: { boost: { value: 3 } }
             }
           },
         ],
         minimumShouldMatch: 1,
         }
-      }}
+      }},
+      {
+        $project: {
+          score: { $meta: "searchScore" },
+          fullDoc: "$$ROOT"
+        }
+      },
+      {
+        $replaceRoot: {
+          newRoot: {
+            $mergeObjects: ["$fullDoc", { score: "$score" }]
+          }
+        }
+      },
+      {
+        $sort: {
+          score: -1
+        }
+      }
     ]).toArray();
   }
 }
