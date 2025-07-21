@@ -59,6 +59,18 @@ export class ProductService {
     return await this.productModel.find(conditions).exec();
   }
 
+  async getRandomProducts() {
+    return this.productModel
+    .aggregate([
+      {
+        $match: {
+          category: { $in: [CATEGORY.DOMESTIC, CATEGORY.INTERNATIONAL] }
+        }
+      },
+      { $sample: {size: 3}}
+    ])
+  }
+
   async getTravelProductById(id: string) {
     return await this.productModel.findOne({_id: id}).exec();
   }

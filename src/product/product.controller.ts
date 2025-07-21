@@ -31,6 +31,11 @@ export class ProductController {
     );
   }
 
+  @Get('/random')
+  getRandomProducts() {
+    return this.productService.getRandomProducts();
+  }
+
   @Get('/single/:id')
   getTravelProductById(@Param('id') id: string) {
     return this.productService.getTravelProductById(id);
