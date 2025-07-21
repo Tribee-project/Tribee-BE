@@ -19,12 +19,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       autoLoadEntities: true,
 
       // ✅ Supabase는 SSL 사용 필수
-      ssl: true,
-      extra: {
-        ssl: {
-          rejectUnauthorized: false,  // self-signed 인증서 허용
-        },
-      },
+      ssl: {
+        rejectUnauthorized: false,
+      },      
     };
   }
 }
