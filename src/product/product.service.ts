@@ -67,7 +67,7 @@ export class ProductService {
           category: { $in: [CATEGORY.DOMESTIC, CATEGORY.INTERNATIONAL] }
         }
       },
-      { $sample: {size: 3}}
+      { $sample: {size: 4}}
     ])
   }
 
