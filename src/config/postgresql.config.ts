@@ -8,7 +8,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
-      type: 'postgres', // ✅ 변경된 부분
+      type: 'postgres',
       host: this.configService.get<string>('SUPABASE_HOST'),
       port: this.configService.get<number>('SUPABASE_PORT'),
       username: this.configService.get<string>('SUPABASE_USER'),
@@ -18,9 +18,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       synchronize: false,
       autoLoadEntities: true,
 
-      // ✅ Supabase는 SSL 사용 필수
-      ssl: false
-         
+      ssl: {
+        rejectUnauthorized: false,
+      },
     };
   }
 }
